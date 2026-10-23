@@ -1,0 +1,19 @@
+# =================================================================
+# .htaccess untuk shared hosting tanpa akses ke luar htdocs
+# (InfinityFree). File ini TIDAK dipakai saat development lokal.
+# =================================================================
+
+# Lapis 1: arahkan semua request ke dalam folder public/
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Lapis 2: kalau lapis 1 tidak berjalan, tolak file sensitif secara langsung
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "(^artisan$|^phpunit\.xml$|\.(json|lock|md|log|sql|sh|yml|yaml)$)">
+    Require all denied
+</FilesMatch>
