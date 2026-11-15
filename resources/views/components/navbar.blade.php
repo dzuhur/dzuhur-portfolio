@@ -5,6 +5,7 @@
         'Experience' => '#experience',
         'Work' => '#work',
         'Contact' => '#contact',
+        'Mini Game' => '#mini-game',
     ];
 @endphp
 
@@ -18,7 +19,7 @@
         <ul class="hidden items-center gap-8 text-sm md:flex">
             @foreach ($links as $label => $href)
                 <li>
-                    <a href="{{ $href }}" class="text-neutral-600 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white">
+                    <a href="{{ $href }}" class="nav-link text-neutral-600 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white">
                         {{ $label }}
                     </a>
                 </li>

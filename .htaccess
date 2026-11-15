@@ -1,19 +1,50 @@
-# =================================================================
-# .htaccess untuk shared hosting tanpa akses ke luar htdocs
-# (InfinityFree). File ini TIDAK dipakai saat development lokal.
-# =================================================================
+Options -Indexes
 
-# Lapis 1: arahkan semua request ke dalam folder public/
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
+    # ==========================================
+    # 1. REDIRECT HTTPS
+    # ==========================================
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://dzuhur.my.id%{REQUEST_URI} [R=301,L]
+
+    # ==========================================
+    # 2. REDIRECT AKSES LANGSUNG /public/
+    # Hanya untuk permintaan langsung browser
+    # ==========================================
+    RewriteCond %{THE_REQUEST} "\s/+public/?(?:[?\s])" [NC]
+    RewriteRule ^public/?$ https://dzuhur.my.id/ [R=302,L]
+
+    # ==========================================
+    # 3. BLOKIR DIREKTORI INTERNAL LARAVEL
+    # ==========================================
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|tests|vendor)(/|$) - [F,L,NC]
+
+    # ==========================================
+    # 4. IZINKAN GAMBAR PROJECT PUBLIK
+    # ==========================================
+    RewriteRule ^storage/projects/([a-zA-Z0-9_-]+\.(webp|png|jpe?g|gif|avif))$ public/storage/projects/$1 [END,NC]
+
+    # ==========================================
+    # 5. BLOKIR STORAGE INTERNAL LAINNYA
+    # ==========================================
+    RewriteRule ^storage(/|$) - [F,L,NC]
+
+    # ==========================================
+    # 6. BLOKIR FILE SENSITIF
+    # ==========================================
+    RewriteRule (^|/)\.(?!well-known(?:/|$)) - [F,L]
+    RewriteRule ^(artisan|composer\.(json|lock)|phpunit\.xml|package(-lock)?\.json|vite\.config\..*|.*\.(env|log|sql|bak|ini|ya?ml))$ - [F,L,NC]
+
+    # ==========================================
+    # 7. CEGAH REWRITE BERULANG
+    # ==========================================
+    RewriteRule ^public(/|$) - [L]
+
+    # ==========================================
+    # 8. ARAHKAN REQUEST KE LARAVEL PUBLIC
+    # ==========================================
     RewriteRule ^(.*)$ public/$1 [L]
+
 </IfModule>
-
-# Lapis 2: kalau lapis 1 tidak berjalan, tolak file sensitif secara langsung
-<FilesMatch "^\.">
-    Require all denied
-</FilesMatch>
-
-<FilesMatch "(^artisan$|^phpunit\.xml$|\.(json|lock|md|log|sql|sh|yml|yaml)$)">
-    Require all denied
-</FilesMatch>

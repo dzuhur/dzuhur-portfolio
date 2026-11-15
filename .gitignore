@@ -3,6 +3,11 @@
 .env
 .env.backup
 .env.production
+.env.*
+!.env.example
+/dzuhur-portfolio.sql
+/public/cek-php-2026.php
+/storage/framework/testing-temp/
 .phpactor.json
 .phpunit.result.cache
 /.codex

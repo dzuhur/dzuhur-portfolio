@@ -5,6 +5,7 @@ Website portfolio pribadi untuk menampilkan profil, project, dan informasi konta
 ## Fitur
 
 - Halaman utama portfolio
+- Mini Game interaktif dengan kontrol keyboard dan sentuh
 - Formulir kontak yang menyimpan pesan
 - Halaman untuk mengunduh resume
 - Panel admin untuk mengelola project dan pesan
@@ -87,6 +88,16 @@ Untuk menjalankan Vite dalam mode development, buka terminal lain dan jalankan:
 ```bash
 npm run dev
 ```
+
+## Pengujian
+
+Pasang dependency development dengan `composer install`, lalu jalankan:
+
+```bash
+composer test
+```
+
+Pengujian memakai SQLite di memori, dengan pengaman pada `tests/TestCase.php` untuk menolak reset database selain SQLite `:memory:`.
 
 ## URL
 

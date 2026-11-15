@@ -9,3 +9,221 @@
 
     --color-accent: #e8590c;
 }
+
+[data-game-world3d] > div[aria-hidden="true"] { display: none; }
+[data-game-world-canvas] { display: block; pointer-events: none; }
+[data-game-world3d] [data-game-world] { border-color: rgb(255 255 255 / 18%); background: rgb(0 0 0 / 42%); backdrop-filter: blur(8px); }
+[data-game-world3d] [data-game-status] { z-index: 5; padding: .45rem .8rem; border: 1px solid rgb(255 255 255 / 12%); border-radius: 999px; background: rgb(0 0 0 / 48%); backdrop-filter: blur(8px); }
+[data-game-world3d]:fullscreen [data-game-status] { bottom: 1rem; width: max-content; max-width: 80%; margin-inline: auto; }
+
+[data-game-shell]:fullscreen {
+    box-sizing: border-box;
+    display: grid;
+    width: 100vw;
+    width: 100dvw;
+    height: 100vh;
+    height: 100dvh;
+    max-width: none;
+    grid-template-columns: minmax(0, 1fr) minmax(250px, 0.42fr);
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    grid-template-areas: "hud hud" "meta overdrive" "board board" "tools actions";
+    align-content: stretch;
+    gap: clamp(0.45rem, 1.1vh, 0.9rem) clamp(0.75rem, 1.6vw, 1.5rem);
+    overflow: hidden;
+    padding: clamp(0.65rem, 1.8vh, 1.5rem) clamp(0.75rem, 2.5vw, 2.5rem);
+    background: radial-gradient(ellipse at 50% 100%, #142333 0%, #080910 62%);
+    color: #f4f4f5;
+}
+
+[data-game-shell]:fullscreen [data-game-intro] { display: none; }
+[data-game-shell]:fullscreen [data-game-hud] { grid-area: hud; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .5rem; margin: 0; }
+[data-game-shell]:fullscreen [data-game-hud] p,
+[data-game-shell]:fullscreen [data-game-meta] p {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: .4rem;
+    margin: 0;
+    border-color: rgb(255 255 255 / 13%);
+    border-radius: .8rem;
+    background: rgb(255 255 255 / 5%);
+    padding: .6rem .8rem;
+    color: #e4e4e7;
+    font-size: clamp(.72rem, 1vw, .95rem);
+}
+[data-game-shell]:fullscreen [data-game-meta] { grid-area: meta; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .45rem; align-self: stretch; margin: 0; }
+[data-game-shell]:fullscreen [data-game-overdrive-panel] { grid-area: overdrive; align-self: stretch; display: flex; flex-direction: column; justify-content: center; margin: 0; border-color: rgb(217 70 239 / 35%); background: rgb(217 70 239 / 8%); }
+[data-game-shell]:fullscreen [data-game-tools] { grid-area: tools; align-self: center; margin: 0; }
+[data-game-shell]:fullscreen [data-game-actions] { grid-area: actions; align-self: center; justify-content: flex-end; gap: .5rem; margin: 0; }
+[data-game-shell]:fullscreen [data-game-tools] button,
+[data-game-shell]:fullscreen [data-game-actions] button { padding: .55rem .85rem; font-size: .8rem; }
+[data-game-shell]:fullscreen [data-game-actions] > p { display: none; }
+[data-game-shell]:fullscreen [data-game-actions] [data-game-power] { display: inline-flex; }
+[data-game-shell]:fullscreen [data-game-board] {
+    grid-area: board;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    margin: 0;
+    border-radius: 1.25rem;
+    box-shadow: inset 0 0 80px rgb(34 211 238 / 7%), 0 20px 80px rgb(0 0 0 / 35%);
+}
+
+[data-game-shell]:fullscreen p {
+    color: #d4d4d8;
+}
+
+[data-game-shell]:fullscreen details { position: relative; z-index: 40; background: #11131b; }
+[data-game-shell]:fullscreen [data-game-duel-callout] > div { border-color: rgb(251 113 133 / 70%); box-shadow: 0 0 80px rgb(244 63 94 / 35%); }
+
+@media (max-width: 700px) {
+    [data-game-shell]:fullscreen { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto minmax(0, 1fr) auto auto; grid-template-areas: "hud" "meta" "overdrive" "board" "tools" "actions"; gap: .45rem; padding: .55rem; }
+    [data-game-shell]:fullscreen [data-game-hud] { gap: .3rem; }
+    [data-game-shell]:fullscreen [data-game-hud] p,
+    [data-game-shell]:fullscreen [data-game-meta] p { padding: .4rem .5rem; font-size: .68rem; }
+    [data-game-shell]:fullscreen [data-game-meta] { gap: .3rem; }
+    [data-game-shell]:fullscreen [data-game-overdrive-panel] { padding: .5rem .7rem; }
+    [data-game-shell]:fullscreen [data-game-tools],
+    [data-game-shell]:fullscreen [data-game-actions] { justify-content: center; gap: .35rem; }
+    [data-game-shell]:fullscreen [data-game-tools] button,
+    [data-game-shell]:fullscreen [data-game-actions] button { padding: .4rem .6rem; font-size: .7rem; }
+    [data-game-shell]:fullscreen [data-game-actions] [data-game-power] { display: none; }
+    [data-game-shell]:fullscreen [data-game-board] { border-radius: .85rem; }
+}
+/* Animasi pembuka hero */
+@keyframes hero-enter {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    #hero > div > * {
+        animation: hero-enter 700ms ease-out both;
+    }
+
+    #hero > div > :nth-child(2) { animation-delay: 120ms; }
+    #hero > div > :nth-child(3) { animation-delay: 240ms; }
+    #hero > div > :nth-child(4) { animation-delay: 360ms; }
+    #hero > div > :nth-child(5) { animation-delay: 480ms; }
+    #hero > div > :nth-child(6) { animation-delay: 600ms; }
+}
+/* Interaksi tombol hero dan kirim pesan */
+@media (prefers-reduced-motion: no-preference) {
+    #hero a,
+    [data-submit-button] {
+        transition:
+            transform 250ms ease,
+            box-shadow 250ms ease,
+            background-color 250ms ease,
+            border-color 250ms ease,
+            color 250ms ease,
+            opacity 250ms ease;
+    }
+
+    #hero a:active,
+    [data-submit-button]:not(:disabled):active {
+        transform: scale(0.97);
+    }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    #hero a:hover,
+    [data-submit-button]:not(:disabled):hover {
+        transform: translateY(-3px);
+    }
+
+    #hero a.rounded-full:hover,
+    [data-submit-button]:not(:disabled):hover {
+        box-shadow: 0 8px 20px rgb(232 89 12 / 18%);
+    }
+}
+/* Interaksi kartu proyek */
+@media (prefers-reduced-motion: no-preference) {
+    #work article {
+        transition:
+            transform 300ms ease,
+            box-shadow 300ms ease,
+            border-color 300ms ease;
+    }
+
+    #work article:focus-within {
+        transform: translateY(-6px);
+        border-color: var(--color-accent);
+        box-shadow: 0 16px 32px rgb(0 0 0 / 12%);
+    }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    #work article:hover {
+        transform: translateY(-6px);
+        border-color: var(--color-accent);
+        box-shadow: 0 16px 32px rgb(0 0 0 / 12%);
+    }
+}
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    pointer-events: none;
+    z-index: 100;
+}
+@media (prefers-reduced-motion: no-preference) {
+    .project-image img {
+        transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    #work article:focus-within .project-image img {
+        transform: scale(1.05);
+    }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    #work article:hover .project-image img {
+        transform: scale(1.05);
+    }
+}
+.nav-link {
+    position: relative;
+    display: inline-block;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 2px;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+.nav-link:focus-visible::after {
+    transform: scaleX(1);
+}
+
+@media (hover: hover) {
+    .nav-link:hover::after {
+        transform: scaleX(1);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .nav-link::after {
+        transition: transform 250ms ease;
+    }
+}

@@ -163,10 +163,12 @@
 
                                 {{-- Thumbnail atau placeholder tipografi --}}
                                 @if ($project->image)
-                                    <img src="{{ asset('storage/' . $project->image) }}"
-                                         alt="{{ $project->title }}"
-                                         class="aspect-[16/10] w-full object-cover"
-                                         loading="lazy">
+                                    <div class="project-image overflow-hidden">
+                                        <img src="{{ asset('storage/' . $project->image) }}"
+                                             alt="{{ $project->title }}"
+                                             class="aspect-[16/10] w-full object-cover"
+                                             loading="lazy">
+                                    </div>
                                 @else
                                     <div class="flex aspect-[16/10] items-end bg-neutral-100 p-6 dark:bg-neutral-900" aria-hidden="true">
                                         <span class="font-serif text-5xl italic text-neutral-300 dark:text-neutral-700">
@@ -224,6 +226,139 @@
                         </li>
                     @endforelse
                 </ul>
+            </div>
+        </section>
+
+{{-- MINI GAME --}}
+        <section id="mini-game" class="border-t border-neutral-200 dark:border-neutral-800">
+            <div class="mx-auto grid max-w-5xl gap-10 px-6 py-24 md:grid-cols-[1fr_2fr] md:gap-16">
+                <x-section-heading number="05" title="Mini Game" />
+
+                <div data-game-shell>
+                    <p data-game-intro class="max-w-xl text-lg leading-relaxed text-neutral-700 dark:text-neutral-300">
+                        Ikuti penanda kristal untuk mengumpulkan energi. Selesaikan misi kristal lalu aktifkan portal ke biome berikutnya. Penjaga bisa dikalahkan dengan Dash atau tombol E saat berada dekat.
+                    </p>
+
+                    <div data-game-hud class="mt-6 grid grid-cols-2 gap-2 text-sm sm:grid-cols-5">
+                        <p class="rounded-lg border border-neutral-200 px-3 py-2 dark:border-neutral-800">Skor <span class="ml-1 font-semibold tabular-nums text-accent" data-game-score aria-live="polite">0</span></p>
+                        <p class="rounded-lg border border-neutral-200 px-3 py-2 dark:border-neutral-800">Waktu <span class="ml-1 font-medium tabular-nums" data-game-time>00:00</span></p>
+                        <p class="rounded-lg border border-neutral-200 px-3 py-2 dark:border-neutral-800">Level <span class="ml-1 font-semibold text-accent" data-game-level>1</span></p>
+                        <p class="rounded-lg border border-neutral-200 px-3 py-2 dark:border-neutral-800">HP <span class="ml-1 font-semibold tracking-wider text-rose-500" data-game-hp aria-label="3 nyawa">♥♥♥</span></p>
+                        <p class="rounded-lg border border-neutral-200 px-3 py-2 text-neutral-500 dark:border-neutral-800" data-game-best>Terbaik: 0</p>
+                    </div>
+
+                    <div data-game-meta class="mt-2 grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
+                        <p class="rounded-lg border border-neutral-200 px-3 py-2 dark:border-neutral-800">Combo <span class="ml-1 font-semibold text-amber-500" data-game-combo>×1</span></p>
+                        <p class="rounded-lg border border-neutral-200 px-3 py-2 dark:border-neutral-800">Misi <span class="ml-1 font-medium" data-game-mission>Ambil 3 pecahan</span></p>
+                        <p class="rounded-lg border border-neutral-200 px-3 py-2 dark:border-neutral-800">Dash <span class="ml-1 font-semibold text-cyan-500" data-game-dash>Siap</span></p>
+                    </div>
+
+                    <div data-game-overdrive-panel class="mt-3 rounded-xl border border-fuchsia-500/30 bg-fuchsia-500/5 p-3">
+                        <div class="mb-2 flex items-center justify-between text-xs">
+                            <span class="font-semibold uppercase tracking-[.18em] text-fuchsia-600 dark:text-fuchsia-300">Overdrive</span>
+                            <span data-game-overdrive-label>Energi 0%</span>
+                        </div>
+                        <div class="h-2 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800" role="progressbar" aria-label="Energi Overdrive" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-game-overdrive-bar>
+                            <div class="h-full w-0 rounded-full bg-gradient-to-r from-fuchsia-500 via-violet-500 to-cyan-300 shadow-[0_0_12px_rgba(217,70,239,.7)] transition-[width] duration-150" data-game-overdrive-fill></div>
+                        </div>
+                    </div>
+
+                    <div data-game-tools class="mt-3 flex flex-wrap items-center gap-3">
+                        <button type="button" data-game-pause class="rounded-full border border-neutral-300 px-4 py-2 text-sm transition hover:border-accent disabled:cursor-not-allowed disabled:opacity-40 dark:border-neutral-700" disabled>Jeda (P)</button>
+                        <button type="button" data-game-fullscreen class="rounded-full border border-neutral-300 px-4 py-2 text-sm transition hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent dark:border-neutral-700" aria-pressed="false">Fullscreen (F)</button>
+                        <details class="group rounded-xl border border-neutral-200 px-4 py-2 text-sm dark:border-neutral-800">
+                            <summary class="cursor-pointer font-medium">Pengaturan audio</summary>
+                            <div class="mt-3 grid gap-3 pb-1 sm:grid-cols-2">
+                                <label class="grid gap-1 text-xs">Musik <span data-game-music-value>35%</span>
+                                    <input type="range" min="0" max="100" value="35" data-game-music-volume class="accent-fuchsia-500">
+                                </label>
+                                <label class="grid gap-1 text-xs">Efek suara <span data-game-sfx-value>70%</span>
+                                    <input type="range" min="0" max="100" value="70" data-game-sfx-volume class="accent-cyan-500">
+                                </label>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div data-game-board class="relative mt-5 h-64 touch-none overflow-hidden rounded-xl border border-cyan-500/40 bg-neutral-950 outline-none focus-visible:ring-2 focus-visible:ring-accent sm:h-72"
+                         data-game-world3d role="application" aria-label="Mini-game open world 3D kotak" tabindex="0">
+                        <canvas data-game-world-canvas class="absolute inset-0 h-full w-full" aria-hidden="true"></canvas>
+                        <div aria-hidden="true" class="pointer-events-none absolute inset-0 opacity-20" style="background-image:radial-gradient(#67e8f9 1px,transparent 1px);background-size:24px 24px"></div>
+                        <div class="pointer-events-none absolute left-3 top-3 z-10 rounded-lg border border-white/15 bg-black/45 px-3 py-2 backdrop-blur-sm">
+                            <span class="block text-[9px] font-semibold uppercase tracking-[.24em] text-cyan-200" data-game-world>NEON CITY</span>
+                            <span class="block text-[10px] text-white/70" data-game-world-mechanic>Zona dasar · ritme seimbang</span>
+                        </div>
+                        <div class="pointer-events-none absolute right-3 top-3 z-10 rounded-lg border border-cyan-200/20 bg-black/55 px-3 py-2 text-right text-[10px] text-white/85 backdrop-blur-sm" data-game-target-hint>KRISTAL · CARI PENANDA</div>
+                        <div data-game-player aria-hidden="true" class="absolute bottom-[30px] left-8 grid h-9 w-9 place-items-center rounded-lg border border-white/80 bg-gradient-to-br from-orange-300 via-accent to-rose-700 text-[10px] text-white shadow-[0_0_20px_rgba(232,89,12,0.7)]"><span>✦</span></div>
+                        <div aria-hidden="true" class="absolute inset-x-0 bottom-[25px] h-px bg-cyan-300/60 shadow-[0_0_12px_rgba(103,232,249,0.8)]"></div>
+                        <p class="pointer-events-none absolute inset-x-4 bottom-3 text-center text-xs text-neutral-300" data-game-status aria-live="polite">Tekan Spasi atau ↑ untuk mulai</p>
+                        <div class="absolute bottom-3 left-3 z-10 grid grid-cols-3 gap-1 sm:hidden" data-game-touch-controls aria-label="Kontrol gerak sentuh">
+                            <span></span><button type="button" data-world-key="w" class="rounded-lg border border-white/20 bg-black/55 px-3 py-2 text-white">▲</button><span></span>
+                            <button type="button" data-world-key="a" class="rounded-lg border border-white/20 bg-black/55 px-3 py-2 text-white">◀</button>
+                            <button type="button" data-world-key="s" class="rounded-lg border border-white/20 bg-black/55 px-3 py-2 text-white">▼</button>
+                            <button type="button" data-world-key="d" class="rounded-lg border border-white/20 bg-black/55 px-3 py-2 text-white">▶</button>
+                        </div>
+                        <div class="absolute bottom-3 right-3 z-10 flex gap-2 sm:hidden" data-game-touch-controls>
+                            <button type="button" data-world-action="jump" class="rounded-full border border-white/25 bg-black/60 px-3 py-2 text-xs font-bold text-white">LOMPAT</button>
+                            <button type="button" data-world-action="dash" class="rounded-full border border-cyan-300/40 bg-cyan-950/70 px-3 py-2 text-xs font-bold text-cyan-100">DASH</button>
+                        </div>
+                        <div class="pointer-events-none absolute left-1/2 top-1/2 z-10 hidden w-[min(92%,440px)] -translate-x-1/2 -translate-y-1/2" data-game-duel-callout>
+                            <div class="rounded-2xl border border-rose-300/40 bg-neutral-950/90 p-5 text-center text-white shadow-[0_0_50px_rgba(244,63,94,.25)] backdrop-blur-md">
+                                <p class="text-[10px] font-bold uppercase tracking-[.28em] text-rose-300" data-game-duel-count>DUEL · 1/3</p>
+                                <p class="mt-2 text-2xl font-black tracking-wide sm:text-4xl" data-game-duel-instruction>LOMPAT!</p>
+                                <p class="mt-1 text-xs text-neutral-300" data-game-duel-hint>Sapuan rendah · Spasi / ↑ / sentuh</p>
+                                <div class="mt-4 h-2 overflow-hidden rounded-full bg-white/15">
+                                    <div class="h-full w-full origin-left rounded-full bg-gradient-to-r from-amber-300 to-rose-500" data-game-duel-timer></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 z-30 hidden items-center justify-center bg-black/75 p-5 backdrop-blur-sm" data-game-tutorial-overlay>
+                            <div class="w-full max-w-sm rounded-2xl border border-cyan-300/30 bg-neutral-950 p-5 text-white shadow-2xl">
+                                <p class="text-xs font-semibold uppercase tracking-[.2em] text-cyan-300" data-game-tutorial-step>PELATIHAN · 1/4</p>
+                                <h3 class="mt-2 text-xl font-semibold" data-game-tutorial-title>Lompatan</h3>
+                                <p class="mt-2 text-sm leading-relaxed text-neutral-300" data-game-tutorial-copy>Tekan Spasi, ↑, atau sentuh arena. Tahan sebentar untuk melompat lebih tinggi.</p>
+                                <div class="mt-5 flex gap-3">
+                                    <button type="button" data-game-tutorial-next class="rounded-full bg-accent px-4 py-2 text-sm font-semibold">Lanjut</button>
+                                    <button type="button" data-game-tutorial-skip class="rounded-full border border-white/20 px-4 py-2 text-sm">Lewati</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 z-20 hidden items-center justify-center bg-black/70 p-5 backdrop-blur-sm" data-game-pause-overlay>
+                            <div class="rounded-2xl border border-white/20 bg-neutral-950/95 p-6 text-center text-white">
+                                <h3 class="text-2xl font-semibold">Permainan dijeda</h3>
+                                <p class="mt-2 text-sm text-neutral-300">Tekan P atau lanjutkan saat siap.</p>
+                                <button type="button" data-game-resume class="mt-4 rounded-full bg-accent px-5 py-2 text-sm font-semibold">Lanjutkan</button>
+                            </div>
+                        </div>
+                        <div class="absolute inset-0 z-20 hidden items-center justify-center bg-black/80 p-5 backdrop-blur-sm" data-game-summary-overlay>
+                            <div class="w-full max-w-md rounded-2xl border border-white/15 bg-neutral-950/95 p-5 text-white shadow-2xl">
+                                <p class="text-xs font-semibold uppercase tracking-[.2em] text-orange-300">RUN SELESAI</p>
+                                <h3 class="mt-1 text-2xl font-semibold">Rekap permainan</h3>
+                                <div class="mt-4 grid grid-cols-2 gap-2 text-sm" data-game-summary-stats></div>
+                                <p class="mt-4 text-xs font-semibold uppercase tracking-wider text-cyan-200">Pencapaian</p>
+                                <div class="mt-2 flex flex-wrap gap-2 text-xs" data-game-achievements></div>
+                                <p class="mt-3 text-xs text-neutral-400" data-game-progress></p>
+                                <button type="button" data-game-restart class="mt-5 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold">Main lagi</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-game-actions class="mt-4 flex flex-wrap items-center gap-4">
+                        <button type="button" data-game-action class="rounded-full bg-accent px-5 py-3 text-sm font-medium text-white transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent">
+                            Mulai / Lompat
+                        </button>
+                        <button type="button" data-game-dash-action class="rounded-full border border-cyan-500/60 px-4 py-3 text-sm font-medium text-cyan-600 transition hover:bg-cyan-500/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-500 dark:text-cyan-300" aria-label="Gunakan dash">
+                            Dash (Shift)
+                        </button>
+                        <button type="button" data-game-overdrive-action class="rounded-full border border-fuchsia-500/60 px-4 py-3 text-sm font-medium text-fuchsia-700 transition hover:bg-fuchsia-500/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-fuchsia-500 dark:text-fuchsia-300" aria-label="Aktifkan Overdrive" disabled>
+                            Overdrive (X)
+                        </button>
+                        <button type="button" data-game-music aria-pressed="true" class="rounded-full border border-neutral-300 px-4 py-3 text-sm transition hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent dark:border-neutral-700">
+                            Musik: Nyala
+                        </button>
+                        <span class="text-xs text-neutral-500" data-game-power aria-live="polite">Perisai: 0</span>
+                        <p class="text-xs text-neutral-500">WASD / panah = bergerak · tarik arena = putar kamera · Spasi = lompat · Shift = Dash · E = ambil portal / kalahkan penjaga.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
