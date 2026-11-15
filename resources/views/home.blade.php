@@ -230,7 +230,7 @@
         </section>
 
 {{-- MINI GAME --}}
-        <section id="mini-game" class="border-t border-neutral-200 dark:border-neutral-800">
+        <!-- <section id="mini-game" class="border-t border-neutral-200 dark:border-neutral-800">
             <div class="mx-auto grid max-w-5xl gap-10 px-6 py-24 md:grid-cols-[1fr_2fr] md:gap-16">
                 <x-section-heading number="05" title="Mini Game" />
 
@@ -360,7 +360,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
 
                 {{-- RESUME --}}
         <section id="resume" class="border-t border-neutral-200 dark:border-neutral-800">

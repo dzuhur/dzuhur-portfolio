@@ -5,7 +5,6 @@
         'Experience' => '#experience',
         'Work' => '#work',
         'Contact' => '#contact',
-        'Mini Game' => '#mini-game',
     ];
 @endphp
 
